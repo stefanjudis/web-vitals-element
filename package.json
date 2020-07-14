@@ -1,11 +1,17 @@
 {
   "name": "web-vitals-element",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev:server": "live-server .",
+    "dev:bundle": "rollup -cw",
+    "dev": "run-p dev:*",
+    "bundle": "NODE_ENV=production rollup -c"
   },
+  "files": [
+    "dist/**"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/stefanjudis/web-vitals-element.git"
@@ -16,5 +22,15 @@
   "bugs": {
     "url": "https://github.com/stefanjudis/web-vitals-element/issues"
   },
-  "homepage": "https://github.com/stefanjudis/web-vitals-element#readme"
+  "homepage": "https://github.com/stefanjudis/web-vitals-element#readme",
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^8.4.0",
+    "live-server": "^1.2.1",
+    "npm-run-all": "^4.1.5",
+    "rollup": "^2.21.0",
+    "rollup-plugin-terser": "^6.1.0"
+  },
+  "dependencies": {
+    "web-vitals": "^0.2.3"
+  }
 }
