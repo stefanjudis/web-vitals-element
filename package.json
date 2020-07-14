@@ -7,7 +7,9 @@
     "dev:server": "live-server .",
     "dev:bundle": "rollup -cw",
     "dev": "run-p dev:*",
-    "bundle": "NODE_ENV=production rollup -c"
+    "bundle": "NODE_ENV=production rollup -c",
+    "prepare": "NODE_ENV=production rollup -c && rollup -c",
+    "prepublish": "npm run prepare"
   },
   "files": [
     "dist/**"

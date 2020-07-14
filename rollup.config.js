@@ -7,7 +7,9 @@ export default {
   input: 'index.js',
   output: {
     format: 'es',
-    file: 'dist/web-vitals-element.js',
+    file: IS_PRODUCTION
+      ? 'dist/web-vitals-element.min.js'
+      : 'dist/web-vitals-element.js',
   },
   plugins: [nodeResolve(), IS_PRODUCTION ? terser() : null],
 };
