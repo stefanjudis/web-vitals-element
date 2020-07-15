@@ -8,8 +8,7 @@
     "dev:bundle": "rollup -cw",
     "dev": "run-p dev:*",
     "bundle": "NODE_ENV=production rollup -c",
-    "prepare": "NODE_ENV=production rollup -c && rollup -c",
-    "prepublish": "npm run prepare"
+    "prepublish": "NODE_ENV=production rollup -c && rollup -c"
   },
   "files": [
     "dist/**"

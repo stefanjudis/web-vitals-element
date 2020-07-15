@@ -2,10 +2,16 @@ import * as webVitals from 'web-vitals';
 
 // borrowed from the vitals extension
 // https://github.com/GoogleChrome/web-vitals-extension/blob/master/src/browser_action/vitals.js#L20-L23
-const THRESHOLDS = new Map([
-  ['CLS', 2500],
-  ['FID', 100],
-  ['CLS', 0.1],
+const METRIC_CONFIG = new Map([
+  ['LCP', { threshold: 2500, explainerURL: 'https://web.dev/lcp/' }],
+  ['FID', { threshold: 100, explainerURL: 'https://web.dev/fid/' }],
+  ['CLS', { threshold: 0.1, explainerURL: 'https://web.dev/cls/' }],
+  // todo check the thresholds for the following
+  ['FCP', { threshold: 2500, explainerURL: 'https://web.dev/fcp/' }],
+  [
+    'TTFB',
+    { threshold: 2500, explainerURL: 'https://web.dev/time-to-first-byte/' },
+  ],
 ]);
 
 class WebVitals extends HTMLElement {
@@ -14,12 +20,12 @@ class WebVitals extends HTMLElement {
 
     const metricList = this.getAttribute('metrics')
       ? this.getAttribute('metrics').split(',')
-      : ['CLS', 'FID', 'LCP'];
+      : ['CLS', 'FID', 'LCP', 'FCP', 'TTFB'];
 
     this.metrics = new Map(
       metricList.map((metricName) => [
         metricName,
-        { threshold: THRESHOLDS.get(metricName) },
+        METRIC_CONFIG.get(metricName),
       ])
     );
   }
@@ -31,9 +37,9 @@ class WebVitals extends HTMLElement {
       const getMetric = webVitals[`get${key}`];
       if (getMetric) {
         getMetric((metric) => {
-          this.metrics.set(key, metric);
+          this.metrics.set(key, { ...this.metrics.get(key), ...metric });
           this.render();
-        });
+        }, true);
       } else {
         console.error(`${key} is not supported`);
       }
@@ -46,11 +52,19 @@ class WebVitals extends HTMLElement {
       <dl>
         ${[...this.metrics]
           .map(([key, metric]) => {
+            const { explainerURL, isFinal, threshold, value } = metric;
+            let classes = '';
+
+            if (isFinal) {
+              classes += 'is-final ';
+              classes += value > threshold ? 'is-poor' : 'is-great';
+            }
+
             return `
-            <dt>${key}</dt>
-            <dd class="${
-              metric.value > metric.threshold ? 'is-poor' : 'is-great'
-            }">${metric.value ? `${Math.floor(metric.value)}ms` : '...'}</dd>
+            <div class="${classes}">
+              <dt><a href="${explainerURL}">${key}</a></dt>
+              <dd>${value ? `${Math.floor(value)}ms` : '...'}</dd>
+            </div>
           `;
           })
           .join('')}
