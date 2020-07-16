@@ -33,31 +33,38 @@ class WebVitals extends HTMLElement {
   constructor() {
     super();
 
-    const metricList = this.getAttribute('metrics')
-      ? this.getAttribute('metrics').split(',')
+    const metricList = this.hasAttributes()
+      ? this.getAttributeNames().map((attr) => attr.toUpperCase())
       : ['CLS', 'FID', 'LCP', 'FCP', 'TTFB'];
 
     this.metrics = new Map(
-      metricList.map((metricName) => [
-        metricName,
-        METRIC_CONFIG.get(metricName),
-      ])
+      metricList.reduce((acc, metricName) => {
+        const getValue = webVitals[`get${metricName}`];
+        if (!getValue) {
+          console.error(`${metricName} is not supported by '<web-vitals />'`);
+          return acc;
+        }
+
+        return [
+          ...acc,
+          [
+            metricName,
+            { ...METRIC_CONFIG.get(metricName), getValue, name: metricName },
+          ],
+        ];
+      }, [])
     );
   }
 
   connectedCallback() {
     this.render();
 
-    for (let key of this.metrics.keys()) {
-      const getMetric = webVitals[`get${key}`];
-      if (getMetric) {
-        getMetric((metric) => {
-          this.metrics.set(key, { ...this.metrics.get(key), ...metric });
-          this.render();
-        }, true);
-      } else {
-        console.error(`${key} is not supported`);
-      }
+    for (let metricConfig of this.metrics.values()) {
+      const { name, getValue } = metricConfig;
+      getValue((metric) => {
+        this.metrics.set(name, { ...metricConfig, ...metric });
+        this.render();
+      }, true);
     }
   }
 
@@ -90,4 +97,4 @@ class WebVitals extends HTMLElement {
   }
 }
 
-customElements.define('web-vitals', WebVitals);
+export default WebVitals;
