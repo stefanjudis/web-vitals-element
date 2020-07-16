@@ -33,8 +33,12 @@ class WebVitals extends HTMLElement {
   constructor() {
     super();
 
-    const metricList = this.hasAttributes()
-      ? this.getAttributeNames().map((attr) => attr.toUpperCase())
+    const allowedAttributes = ['class', 'style'];
+    const metricAttributes = this.getAttributeNames()
+      .filter((attr) => !allowedAttributes.includes(attr))
+      .map((attr) => attr.toUpperCase());
+    const metricList = metricAttributes.length
+      ? metricAttributes
       : ['CLS', 'FID', 'LCP', 'FCP', 'TTFB'];
 
     this.metrics = new Map(

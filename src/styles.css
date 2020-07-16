@@ -1,6 +1,6 @@
 .web-vitals {
   position: fixed;
-  top: 1em;
+  bottom: 1em;
   right: 1em;
   border-radius: 0.5em;
   overflow: hidden;

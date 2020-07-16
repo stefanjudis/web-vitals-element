@@ -4,15 +4,20 @@
     <title>lite-youtube-embed</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        font-size: 1.5em;
+      }
+    </style>
+    <style>
   </head>
 
   <body>
-    <h1><code>web-vitals</code> custom element</h1>
-
-    <web-vitals ttfb lcp fid></web-vitals>
-
-    <!-- <script src="https://unpkg.com/web-vitals-element/dist/web-vitals-element.js"></script> -->
-    <!-- <script src="../dist/web-vitals-element.js"></script> -->
+    <h1>web vitals custom element</h1>
+    <!-- you can control the metrics -->
+    <web-vitals class="foo" fid lcp fcp />
+    <!-- I'm working on this web-vitals custom element 👇 -->
     <script src="../dist/web-vitals-element.styled.js"></script>
+    <!-- let's see when it's done! 🙈 -->
   </body>
 </html>
