@@ -1,6 +1,6 @@
 # web-vitals-element
 
-...
+![web-vitals-element in styled and unstyled version](./screenshot.png)
 
 ## Code of conduct
 

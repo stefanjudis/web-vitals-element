@@ -6,18 +6,39 @@ const MS_UNIT = 'ms';
 // https://github.com/GoogleChrome/web-vitals-extension/blob/master/src/browser_action/vitals.js#L20-L23
 const METRIC_CONFIG = new Map([
   [
-    'LCP',
-    { threshold: 2500, explainerURL: 'https://web.dev/lcp/', unit: MS_UNIT },
+    'CLS',
+    {
+      threshold: 0.1,
+      observerEntryType: 'layout-shift',
+      explainerURL: 'https://web.dev/cls/',
+    },
+  ],
+  [
+    'FCP',
+    {
+      threshold: 2500,
+      observerEntryType: 'paint',
+      explainerURL: 'https://web.dev/fcp/',
+      unit: MS_UNIT,
+    },
   ],
   [
     'FID',
-    { threshold: 100, explainerURL: 'https://web.dev/fid/', unit: MS_UNIT },
+    {
+      threshold: 100,
+      observerEntryType: 'first-input',
+      explainerURL: 'https://web.dev/fid/',
+      unit: MS_UNIT,
+    },
   ],
-  ['CLS', { threshold: 0.1, explainerURL: 'https://web.dev/cls/' }],
-  // todo check the thresholds for the following
   [
-    'FCP',
-    { threshold: 2500, explainerURL: 'https://web.dev/fcp/', unit: MS_UNIT },
+    'LCP',
+    {
+      threshold: 2500,
+      observerEntryType: 'paint',
+      explainerURL: 'https://web.dev/lcp/',
+      unit: MS_UNIT,
+    },
   ],
   [
     'TTFB',
@@ -29,23 +50,65 @@ const METRIC_CONFIG = new Map([
   ],
 ]);
 
+const GENERAL_ATTRIBUTES = ['class', 'style'];
+const CONFIG_ATTRIBUTES = ['show-unsupported'];
+
 class WebVitals extends HTMLElement {
   constructor() {
     super();
 
-    const allowedAttributes = ['class', 'style'];
+    this.unsupportedMetrics = [];
+
     const metricAttributes = this.getAttributeNames()
-      .filter((attr) => !allowedAttributes.includes(attr))
+      .filter(
+        (attr) =>
+          !GENERAL_ATTRIBUTES.includes(attr) &&
+          !CONFIG_ATTRIBUTES.includes(attr)
+      )
       .map((attr) => attr.toUpperCase());
     const metricList = metricAttributes.length
       ? metricAttributes
-      : ['CLS', 'FID', 'LCP', 'FCP', 'TTFB'];
+      : [...METRIC_CONFIG.keys()];
 
-    this.metrics = new Map(
+    this.metrics = this.getMetrics(metricList);
+  }
+
+  connectedCallback() {
+    this.render();
+
+    for (let metricConfig of this.metrics.values()) {
+      const { name, getWebVitalsValue } = metricConfig;
+
+      getWebVitalsValue((metric) => {
+        this.metrics.set(name, {
+          ...metricConfig,
+          ...metric,
+        });
+        this.render();
+      }, true);
+    }
+  }
+
+  getMetrics(metricList) {
+    return new Map(
       metricList.reduce((acc, metricName) => {
-        const getValue = webVitals[`get${metricName}`];
-        if (!getValue) {
+        // exclude metric when it's not support by web-vitals
+        const getWebVitalsValue = webVitals[`get${metricName}`];
+        if (!getWebVitalsValue) {
           console.error(`${metricName} is not supported by '<web-vitals />'`);
+          this.unsupportedMetrics.push(metricName);
+          return acc;
+        }
+
+        // exclude metric when it's not supported
+        const metricConfig = METRIC_CONFIG.get(metricName);
+        const { observerEntryType } = metricConfig;
+        if (
+          observerEntryType &&
+          !PerformanceObserver.supportedEntryTypes.includes(observerEntryType)
+        ) {
+          console.error(`${metricName} is not supported by your browser`);
+          this.unsupportedMetrics.push(metricName);
           return acc;
         }
 
@@ -53,27 +116,18 @@ class WebVitals extends HTMLElement {
           ...acc,
           [
             metricName,
-            { ...METRIC_CONFIG.get(metricName), getValue, name: metricName },
+            {
+              ...METRIC_CONFIG.get(metricName),
+              getWebVitalsValue,
+              name: metricName,
+            },
           ],
         ];
       }, [])
     );
   }
 
-  connectedCallback() {
-    this.render();
-
-    for (let metricConfig of this.metrics.values()) {
-      const { name, getValue } = metricConfig;
-      getValue((metric) => {
-        this.metrics.set(name, { ...metricConfig, ...metric });
-        this.render();
-      }, true);
-    }
-  }
-
   render() {
-    console.log(this.metrics);
     this.innerHTML = `<div class="web-vitals">
       <dl>
         ${[...this.metrics]
@@ -97,6 +151,12 @@ class WebVitals extends HTMLElement {
           })
           .join('')}
       </dl>
+        ${
+          this.unsupportedMetrics.length &&
+          this.hasAttribute('show-unsupported')
+            ? `<p>Not supported: ${this.unsupportedMetrics.join(', ')}</p>`
+            : ''
+        }
     </div>`;
   }
 }

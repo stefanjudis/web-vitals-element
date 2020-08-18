@@ -4,6 +4,7 @@
   right: 1em;
   border-radius: 0.5em;
   overflow: hidden;
+  padding: 1em;
   font-family: Arial, Helvetica, sans-serif;
   box-shadow: 0 0.25em 0.35em #ddd;
   color: #444;
@@ -15,9 +16,13 @@
 }
 
 .web-vitals dl {
-  padding: 0.75em 1em;
   margin: 0;
   grid-template-columns: 1fr 1fr;
+}
+
+.web-vitals p {
+  margin: 0.5em 0 0;
+  font-size: 0.75em;
 }
 
 .web-vitals div {
