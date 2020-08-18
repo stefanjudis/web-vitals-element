@@ -9,14 +9,20 @@
 ```
 <!-- Include the custom element script -->
 
-<!-- Unstyled 👇 -->
+<!-- Unstyled (installed locally) -->
 <script src="node_modules/web-vitals-element/dist/web-vitals-element.min.js"></script>
+<!-- Unstyled from unpkg.com -->
+<script src="https://unpkg.com/web-vitals-element@1.0.0/dist/web-vitals-element.min.js"></script>
 
-<!-- Styled 👇 -->
+<!-- Styled (installed locally) -->
 <script src="node_modules/web-vitals-element/dist/web-vitals-element.styled.min.js"></script>
+<!-- Styled from unpkg.com -->
+<script src="https://unpkg.com/web-vitals-element@1.0.0/dist/web-vitals-element.styled.min.js"></script>
 ```
 
-Use the element:
+_The element does not render shadow DOM. You can style it like any other element in your HTML page._
+
+After loading the element script, use the `web-vitals` element in your HTML.
 
 ```
 <!-- Basic usage -->
@@ -28,6 +34,10 @@ Use the element:
 <!-- Show message about not support metrics -->
 <web-vitals show-unsupported />
 ```
+
+## Contributing
+
+I'd love to see more themes for the web vitals element box. If you're interested in contributing some fancy looks, please [open an issue](https://github.com/stefanjudis/web-vitals-element/issues/new).
 
 ## Code of conduct
 

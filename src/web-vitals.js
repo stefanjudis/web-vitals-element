@@ -58,22 +58,18 @@ class WebVitals extends HTMLElement {
     super();
 
     this.unsupportedMetrics = [];
+    this.metrics = new Map();
+  }
 
-    const metricAttributes = this.getAttributeNames()
-      .filter(
-        (attr) =>
-          !GENERAL_ATTRIBUTES.includes(attr) &&
-          !CONFIG_ATTRIBUTES.includes(attr)
-      )
-      .map((attr) => attr.toUpperCase());
+  connectedCallback() {
+    const metricAttributes = this.getMetricAttributes();
     const metricList = metricAttributes.length
       ? metricAttributes
       : [...METRIC_CONFIG.keys()];
 
     this.metrics = this.getMetrics(metricList);
-  }
 
-  connectedCallback() {
+    //
     this.render();
 
     for (let metricConfig of this.metrics.values()) {
@@ -87,6 +83,16 @@ class WebVitals extends HTMLElement {
         this.render();
       }, true);
     }
+  }
+
+  getMetricAttributes() {
+    return this.getAttributeNames()
+      .filter(
+        (attr) =>
+          !GENERAL_ATTRIBUTES.includes(attr) &&
+          !CONFIG_ATTRIBUTES.includes(attr)
+      )
+      .map((attr) => attr.toUpperCase());
   }
 
   getMetrics(metricList) {
