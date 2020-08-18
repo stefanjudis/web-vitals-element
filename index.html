@@ -10,14 +10,19 @@
       font-size: 1.5em;
     }
   </style>
+  <!-- let's bring in web-vitals -->
+  <!-- load the styled custom element script -->
+  <script src="https://unpkg.com/web-vitals-element@1.0.1/dist/web-vitals-element.styled.min.js" async></script>
 </head>
 
 <body>
   <h1>web vitals custom element</h1>
+  <!-- use the web-vitals element -->
+  <!-- define the metrics that you're interested in -->
+  <!-- show a message for unsupported metrics in other browsers -->
+  <web-vitals cls fcp ttfb show-unsupported />
 
-  <script src="../dist/web-vitals-element.styled.js"></script>
-
-  <web-vitals show-unsupported />
+  <!-- I'd love to get more fancy themes!!! -->
 </body>
 
 </html>

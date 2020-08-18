@@ -4,6 +4,8 @@
 
 ![web-vitals-element in styled and unstyled version](./screenshot.png)
 
+[See it in action on CodePen](https://codepen.io/stefanjudis/pen/wvGzvWx).
+
 ## Basic usage
 
 ```html
