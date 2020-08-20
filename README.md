@@ -28,20 +28,20 @@ After loading the element script, use the `web-vitals` element in your HTML.
 
 ```html
 <!-- Basic usage -->
-<web-vitals />
+<web-vitals></web-vitals>
 
 <!-- Define the metrics you care about -->
-<web-vitals cls fcp fid lcp ttfb />
+<web-vitals cls fcp fid lcp ttfb></web-vitals>
 
 <!-- Show message about not support metrics -->
-<web-vitals show-unsupported />
+<web-vitals show-unsupported></web-vitals>
 ```
 
 Currently supported metrics: `cls`, `fcp`, `fid`, `lcp`, `ttfb`. Read more about these in [the web-vitals documentation](https://github.com/GoogleChrome/web-vitals).
 
 ## Contributing
 
-I'd love to see more themes for the web vitals element box. If you're interested in contributing some fancy looks, please [open an issue](https://github.com/stefanjudis/web-vitals-element/issues/new).
+*I'd love to see more themes for the web vitals element box – the fancier the better!* If you're interested in contributing some fancy looks, please [open an issue](https://github.com/stefanjudis/web-vitals-element/issues/new).
 
 ## Code of conduct
 
