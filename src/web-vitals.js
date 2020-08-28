@@ -8,7 +8,8 @@ const METRIC_CONFIG = new Map([
   [
     'CLS',
     {
-      threshold: 0.1,
+      goodThreshold: 0.1,
+      needsImprovementThreshold: 0.25,
       observerEntryType: 'layout-shift',
       explainerURL: 'https://web.dev/cls/',
     },
@@ -16,7 +17,7 @@ const METRIC_CONFIG = new Map([
   [
     'FCP',
     {
-      threshold: 2500,
+      goodThreshold: 2500,
       observerEntryType: 'paint',
       explainerURL: 'https://web.dev/fcp/',
       unit: MS_UNIT,
@@ -25,7 +26,8 @@ const METRIC_CONFIG = new Map([
   [
     'FID',
     {
-      threshold: 100,
+      goodThreshold: 100,
+      needsImprovementThreshold: 300,
       observerEntryType: 'first-input',
       explainerURL: 'https://web.dev/fid/',
       unit: MS_UNIT,
@@ -34,7 +36,8 @@ const METRIC_CONFIG = new Map([
   [
     'LCP',
     {
-      threshold: 2500,
+      goodThreshold: 2500,
+      needsImprovementThreshold: 4000,
       observerEntryType: 'paint',
       explainerURL: 'https://web.dev/lcp/',
       unit: MS_UNIT,
@@ -43,7 +46,7 @@ const METRIC_CONFIG = new Map([
   [
     'TTFB',
     {
-      threshold: 2500,
+      goodThreshold: 2500,
       explainerURL: 'https://web.dev/time-to-first-byte/',
       unit: MS_UNIT,
     },
@@ -138,12 +141,19 @@ class WebVitals extends HTMLElement {
       <dl>
         ${[...this.metrics]
           .map(([key, metric]) => {
-            const { explainerURL, isFinal, threshold, unit, value } = metric;
+            const { explainerURL, isFinal, goodThreshold, needsImprovementThreshold, unit, value } = metric;
             let classes = '';
 
             if (isFinal) {
               classes += 'is-final ';
-              classes += value > threshold ? 'is-poor' : 'is-great';
+              let score = 'is-poor';
+              if ( needsImprovementThreshold && value < needsImprovementThreshold ) {
+                score = 'needs-improvement';
+              }
+              if ( value < goodThreshold ) {
+                score = 'is-good';
+              }
+              classes += score;
             }
 
             return `
