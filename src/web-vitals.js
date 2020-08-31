@@ -8,8 +8,10 @@ const METRIC_CONFIG = new Map([
   [
     'CLS',
     {
-      goodThreshold: 0.1,
-      needsImprovementThreshold: 0.25,
+      thresholds: {
+        good: 0.1,
+        needsImprovement: 0.25,
+      },
       observerEntryType: 'layout-shift',
       explainerURL: 'https://web.dev/cls/',
     },
@@ -17,7 +19,9 @@ const METRIC_CONFIG = new Map([
   [
     'FCP',
     {
-      goodThreshold: 2500,
+      thresholds: {
+        good: 2500,
+      },
       observerEntryType: 'paint',
       explainerURL: 'https://web.dev/fcp/',
       unit: MS_UNIT,
@@ -26,8 +30,10 @@ const METRIC_CONFIG = new Map([
   [
     'FID',
     {
-      goodThreshold: 100,
-      needsImprovementThreshold: 300,
+      thresholds: {
+        good: 100,
+        needsImprovement: 300,
+      },
       observerEntryType: 'first-input',
       explainerURL: 'https://web.dev/fid/',
       unit: MS_UNIT,
@@ -36,8 +42,10 @@ const METRIC_CONFIG = new Map([
   [
     'LCP',
     {
-      goodThreshold: 2500,
-      needsImprovementThreshold: 4000,
+      thresholds: {
+        good: 2500,
+        needsImprovement: 4000,
+      },
       observerEntryType: 'paint',
       explainerURL: 'https://web.dev/lcp/',
       unit: MS_UNIT,
@@ -46,7 +54,9 @@ const METRIC_CONFIG = new Map([
   [
     'TTFB',
     {
-      goodThreshold: 2500,
+      thresholds: {
+        good: 2500,
+      },
       explainerURL: 'https://web.dev/time-to-first-byte/',
       unit: MS_UNIT,
     },
@@ -141,16 +151,17 @@ class WebVitals extends HTMLElement {
       <dl>
         ${[...this.metrics]
           .map(([key, metric]) => {
-            const { explainerURL, isFinal, goodThreshold, needsImprovementThreshold, unit, value } = metric;
+            const { explainerURL, isFinal, thresholds, unit, value } = metric;
             let classes = '';
+            const { good, needsImprovement } = thresholds;
 
             if (isFinal) {
               classes += 'is-final ';
               let score = 'is-poor';
-              if ( needsImprovementThreshold && value <= needsImprovementThreshold ) {
+              if ( needsImprovement && value <= needsImprovement ) {
                 score = 'needs-improvement';
               }
-              if ( value <= goodThreshold ) {
+              if ( value <= good ) {
                 score = 'is-good';
               }
               classes += score;
