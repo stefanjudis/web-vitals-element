@@ -38,15 +38,20 @@
   content: '🕐';
 }
 
-.web-vitals div.is-great dd::after {
+.web-vitals div.is-good dd::after {
   content: '✅';
 }
 
+.web-vitals div.needs-improvement dd::after {
+  content: '⚠️';
+}
+
 .web-vitals div.is-poor dd::after {
-  content: '😿';
+  content: '❌';
 }
 
 .web-vitals dd {
   text-align: right;
   margin-left: 1em;
 }
+
