@@ -158,10 +158,10 @@ class WebVitals extends HTMLElement {
             if (isFinal) {
               classes += 'is-final ';
               let score = 'is-poor';
-              if ( needsImprovement && value <= needsImprovement ) {
+              if (needsImprovement && value <= needsImprovement) {
                 score = 'needs-improvement';
               }
-              if ( value <= good ) {
+              if (value <= good) {
                 score = 'is-good';
               }
               classes += score;
