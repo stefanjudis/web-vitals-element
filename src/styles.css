@@ -1,5 +1,5 @@
 .web-vitals {
-  max-width: 12.5em;
+  max-width: 20em;
   border-radius: 0.5em;
   overflow: hidden;
   padding: 1em;
@@ -26,7 +26,7 @@
 
 .web-vitals div {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 3fr 1fr;
 }
 
 .web-vitals div dd::after {
@@ -54,4 +54,3 @@
   text-align: right;
   margin-left: 1em;
 }
-

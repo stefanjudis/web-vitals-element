@@ -14,6 +14,7 @@ const METRIC_CONFIG = new Map([
       },
       observerEntryType: 'layout-shift',
       explainerURL: 'https://web.dev/cls/',
+      longName: 'Cumulative Layout Shift',
     },
   ],
   [
@@ -25,6 +26,7 @@ const METRIC_CONFIG = new Map([
       observerEntryType: 'paint',
       explainerURL: 'https://web.dev/fcp/',
       unit: MS_UNIT,
+      longName: 'First Contentful Paint',
     },
   ],
   [
@@ -37,6 +39,7 @@ const METRIC_CONFIG = new Map([
       observerEntryType: 'first-input',
       explainerURL: 'https://web.dev/fid/',
       unit: MS_UNIT,
+      longName: 'First Input Delay',
     },
   ],
   [
@@ -49,6 +52,7 @@ const METRIC_CONFIG = new Map([
       observerEntryType: 'paint',
       explainerURL: 'https://web.dev/lcp/',
       unit: MS_UNIT,
+      longName: 'Largest Contentful Paint',
     },
   ],
   [
@@ -59,12 +63,13 @@ const METRIC_CONFIG = new Map([
       },
       explainerURL: 'https://web.dev/time-to-first-byte/',
       unit: MS_UNIT,
+      longName: 'Time to first byte',
     },
   ],
 ]);
 
 const GENERAL_ATTRIBUTES = ['class', 'style'];
-const CONFIG_ATTRIBUTES = ['show-unsupported'];
+const CONFIG_ATTRIBUTES = ['show-unsupported', 'show-metric-name'];
 
 class WebVitals extends HTMLElement {
   constructor() {
@@ -111,7 +116,7 @@ class WebVitals extends HTMLElement {
   getMetrics(metricList) {
     return new Map(
       metricList.reduce((acc, metricName) => {
-        // exclude metric when it's not support by web-vitals
+        // exclude metric when it's not supported by web-vitals
         const getWebVitalsValue = webVitals[`get${metricName}`];
         if (!getWebVitalsValue) {
           console.error(`${metricName} is not supported by '<web-vitals />'`);
@@ -151,7 +156,14 @@ class WebVitals extends HTMLElement {
       <dl>
         ${[...this.metrics]
           .map(([key, metric]) => {
-            const { explainerURL, isFinal, thresholds, unit, value } = metric;
+            const {
+              explainerURL,
+              isFinal,
+              longName,
+              thresholds,
+              unit,
+              value,
+            } = metric;
             let classes = '';
             const { good, needsImprovement } = thresholds;
 
@@ -169,7 +181,13 @@ class WebVitals extends HTMLElement {
 
             return `
             <div class="${classes}">
-              <dt><a href="${explainerURL}">${key}</a></dt>
+              <dt>
+                ${
+                  this.hasAttribute('show-metric-name')
+                    ? `${longName} (<a href="${explainerURL}">${key}</a>)`
+                    : `<a href="${explainerURL}">${key}</a>`
+                }
+              </dt>
               <dd>${
                 value ? `${Math.floor(value)}${unit ? unit : ''}` : '...'
               }</dd>

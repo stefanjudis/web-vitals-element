@@ -9,6 +9,11 @@
     body {
       font-size: 1.5em;
     }
+
+    web-vitals {
+      display: block;
+      margin-top: 1em;
+    }
   </style>
   <!-- let's bring in web-vitals -->
   <!-- load the styled custom element script -->
@@ -21,7 +26,9 @@
   <!-- use the web-vitals element -->
   <!-- define the metrics that you're interested in -->
   <!-- show a message for unsupported metrics in other browsers -->
-  <web-vitals cls fcp ttfb show-unsupported />
+  <web-vitals></web-vitals>
+  <web-vitals cls fcp ttfb show-unsupported ></web-vitals>
+  <web-vitals show-unsupported show-metric-name></web-vitals>
 
   <!-- I'd love to get more fancy themes!!! -->
 </body>
