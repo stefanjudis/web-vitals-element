@@ -1,5 +1,4 @@
 import * as webVitals from 'web-vitals';
-// import { getCLS, getFID, getLCP } from 'web-vitals';
 
 const MS_UNIT = 'ms';
 
@@ -117,7 +116,6 @@ class WebVitals extends HTMLElement {
     return new Map(
       metricList.reduce((acc, metricName) => {
         // exclude metric when it's not supported by web-vitals
-
         const getWebVitalsValue = webVitals[`get${metricName}`];
         if (!getWebVitalsValue) {
           console.error(`${metricName} is not supported by '<web-vitals />'`);
