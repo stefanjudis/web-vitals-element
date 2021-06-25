@@ -87,9 +87,7 @@ class WebVitals extends HTMLElement {
       : [...METRIC_CONFIG.keys()];
 
     this.metrics = this.getMetrics(metricList);
-    console.log(this.metrics);
 
-    //
     this.render();
 
     for (let metricConfig of this.metrics.values()) {
