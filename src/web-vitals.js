@@ -1,4 +1,5 @@
 import * as webVitals from 'web-vitals';
+// import { getCLS, getFID, getLCP } from 'web-vitals';
 
 const MS_UNIT = 'ms';
 
@@ -86,6 +87,7 @@ class WebVitals extends HTMLElement {
       : [...METRIC_CONFIG.keys()];
 
     this.metrics = this.getMetrics(metricList);
+    console.log(this.metrics);
 
     //
     this.render();
@@ -117,6 +119,7 @@ class WebVitals extends HTMLElement {
     return new Map(
       metricList.reduce((acc, metricName) => {
         // exclude metric when it's not supported by web-vitals
+
         const getWebVitalsValue = webVitals[`get${metricName}`];
         if (!getWebVitalsValue) {
           console.error(`${metricName} is not supported by '<web-vitals />'`);
@@ -156,18 +159,11 @@ class WebVitals extends HTMLElement {
       <dl>
         ${[...this.metrics]
           .map(([key, metric]) => {
-            const {
-              explainerURL,
-              isFinal,
-              longName,
-              thresholds,
-              unit,
-              value,
-            } = metric;
+            const { explainerURL, longName, thresholds, unit, value } = metric;
             let classes = '';
             const { good, needsImprovement } = thresholds;
 
-            if (isFinal) {
+            if (value) {
               classes += 'is-final ';
               let score = 'is-poor';
               if (needsImprovement && value <= needsImprovement) {

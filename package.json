@@ -10,6 +10,7 @@
     "bundle": "NODE_ENV=production rollup -c",
     "prepublish": "NODE_ENV=production rollup -c && rollup -c"
   },
+  "type": "module",
   "files": [
     "dist/**"
   ],
