@@ -87,7 +87,6 @@ class WebVitals extends HTMLElement {
 
     this.metrics = this.getMetrics(metricList);
 
-    //
     this.render();
 
     for (let metricConfig of this.metrics.values()) {
@@ -156,18 +155,11 @@ class WebVitals extends HTMLElement {
       <dl>
         ${[...this.metrics]
           .map(([key, metric]) => {
-            const {
-              explainerURL,
-              isFinal,
-              longName,
-              thresholds,
-              unit,
-              value,
-            } = metric;
+            const { explainerURL, longName, thresholds, unit, value } = metric;
             let classes = '';
             const { good, needsImprovement } = thresholds;
 
-            if (isFinal) {
+            if (value) {
               classes += 'is-final ';
               let score = 'is-poor';
               if (needsImprovement && value <= needsImprovement) {
