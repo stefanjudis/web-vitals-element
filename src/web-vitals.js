@@ -15,6 +15,7 @@ const METRIC_CONFIG = new Map([
       observerEntryType: 'layout-shift',
       explainerURL: 'https://web.dev/cls/',
       longName: 'Cumulative Layout Shift',
+      roundFn: (value) => Math.floor(value * 100) / 100,
     },
   ],
   [
@@ -155,8 +156,10 @@ class WebVitals extends HTMLElement {
       <dl>
         ${[...this.metrics]
           .map(([key, metric]) => {
-            const { explainerURL, longName, thresholds, unit, value } = metric;
+            const { explainerURL, longName, roundFn, thresholds, unit, value } =
+              metric;
             let classes = '';
+            const roundValue = roundFn || Math.floor;
             const { good, needsImprovement } = thresholds;
 
             if (value) {
@@ -181,7 +184,7 @@ class WebVitals extends HTMLElement {
                 }
               </dt>
               <dd>${
-                value ? `${Math.floor(value)}${unit ? unit : ''}` : '...'
+                value ? `${roundValue(value)}${unit ? unit : ''}` : '...'
               }</dd>
             </div>
           `;
