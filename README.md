@@ -14,12 +14,12 @@
 <!-- Unstyled (installed locally) -->
 <script src="node_modules/web-vitals-element/dist/web-vitals-element.min.js"></script>
 <!-- Unstyled from unpkg.com -->
-<script src="https://unpkg.com/web-vitals-element@1.3.1/dist/web-vitals-element.min.js"></script>
+<script src="https://unpkg.com/web-vitals-element@1.3.2/dist/web-vitals-element.min.js"></script>
 
 <!-- Styled (installed locally) -->
 <script src="node_modules/web-vitals-element/dist/web-vitals-element.styled.min.js"></script>
 <!-- Styled from unpkg.com -->
-<script src="https://unpkg.com/web-vitals-element@1.3.1/dist/web-vitals-element.styled.min.js"></script>
+<script src="https://unpkg.com/web-vitals-element@1.3.2/dist/web-vitals-element.styled.min.js"></script>
 ```
 
 _The element does not render shadow DOM. You can style it like any other element in your HTML page._
@@ -41,7 +41,7 @@ Currently supported metrics: `cls`, `fcp`, `fid`, `lcp`, `ttfb`. Read more about
 
 ## Contributing
 
-*I'd love to see more themes for the web vitals element box – the fancier the better!* If you're interested in contributing some fancy looks, please [open an issue](https://github.com/stefanjudis/web-vitals-element/issues/new).
+_I'd love to see more themes for the web vitals element box – the fancier the better!_ If you're interested in contributing some fancy looks, please [open an issue](https://github.com/stefanjudis/web-vitals-element/issues/new).
 
 ## Code of conduct
 
