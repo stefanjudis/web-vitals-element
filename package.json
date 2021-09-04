@@ -2,7 +2,7 @@
   "name": "web-vitals-element",
   "version": "1.3.3",
   "description": "",
-  "main": "dist/web-vitals-elements.js",
+  "main": "dist/web-vitals-element.js",
   "scripts": {
     "dev:server": "live-server .",
     "dev:bundle": "rollup -cw",
