@@ -14,12 +14,20 @@
 <!-- Unstyled (installed locally) -->
 <script src="node_modules/web-vitals-element/dist/web-vitals-element.min.js"></script>
 <!-- Unstyled from unpkg.com -->
-<script src="https://unpkg.com/web-vitals-element@1.3.2/dist/web-vitals-element.min.js"></script>
+<script src="https://unpkg.com/web-vitals-element@latest/dist/web-vitals-element.min.js"></script>
+<!-- Unstyled from skypack -->
+<script type="module">
+  import 'https://cdn.skypack.dev/web-vitals-element';
+</script>
 
 <!-- Styled (installed locally) -->
 <script src="node_modules/web-vitals-element/dist/web-vitals-element.styled.min.js"></script>
 <!-- Styled from unpkg.com -->
-<script src="https://unpkg.com/web-vitals-element@1.3.2/dist/web-vitals-element.styled.min.js"></script>
+<script src="https://unpkg.com/web-vitals-element@latest/dist/web-vitals-element.styled.min.js"></script>
+<!-- Styled from skypack -->
+<script type="module">
+  import 'https://cdn.skypack.dev/web-vitals-element/styled';
+</script>
 ```
 
 _The element does not render shadow DOM. You can style it like any other element in your HTML page._
