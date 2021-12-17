@@ -62,9 +62,9 @@ const METRIC_CONFIG = new Map([
       thresholds: {
         good: 2500,
       },
-      explainerURL: 'https://web.dev/time-to-first-byte/',
+      explainerURL: 'https://web.dev/ttfb/',
       unit: MS_UNIT,
-      longName: 'Time to first byte',
+      longName: 'Time to First Byte',
     },
   ],
 ]);
