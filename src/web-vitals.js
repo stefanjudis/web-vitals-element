@@ -62,7 +62,7 @@ const METRIC_CONFIG = new Map([
       thresholds: {
         good: 2500,
       },
-      explainerURL: 'https://web.dev/ttfb/',
+      explainerURL: 'https://developer.chrome.com/docs/lighthouse/performance/time-to-first-byte/',
       unit: MS_UNIT,
       longName: 'Time to First Byte',
     },
@@ -155,48 +155,45 @@ class WebVitals extends HTMLElement {
     this.innerHTML = `<div class="web-vitals">
       <dl>
         ${[...this.metrics]
-          .map(([key, metric]) => {
-            const { explainerURL, longName, roundFn, thresholds, unit, value } =
-              metric;
-            let classes = '';
-            const roundValue = roundFn || Math.floor;
-            const { good, needsImprovement } = thresholds;
+        .map(([key, metric]) => {
+          const { explainerURL, longName, roundFn, thresholds, unit, value } =
+            metric;
+          let classes = '';
+          const roundValue = roundFn || Math.floor;
+          const { good, needsImprovement } = thresholds;
 
-            if (value) {
-              classes += 'is-final ';
-              let score = 'is-poor';
-              if (needsImprovement && value <= needsImprovement) {
-                score = 'needs-improvement';
-              }
-              if (value <= good) {
-                score = 'is-good';
-              }
-              classes += score;
+          if (value) {
+            classes += 'is-final ';
+            let score = 'is-poor';
+            if (needsImprovement && value <= needsImprovement) {
+              score = 'needs-improvement';
             }
+            if (value <= good) {
+              score = 'is-good';
+            }
+            classes += score;
+          }
 
-            return `
+          return `
             <div class="${classes}">
               <dt>
-                ${
-                  this.hasAttribute('show-metric-name')
-                    ? `${longName} (<a href="${explainerURL}">${key}</a>)`
-                    : `<a href="${explainerURL}">${key}</a>`
-                }
+                ${this.hasAttribute('show-metric-name')
+              ? `${longName} (<a href="${explainerURL}">${key}</a>)`
+              : `<a href="${explainerURL}">${key}</a>`
+            }
               </dt>
-              <dd>${
-                value ? `${roundValue(value)}${unit ? unit : ''}` : '...'
-              }</dd>
+              <dd>${value ? `${roundValue(value)}${unit ? unit : ''}` : '...'
+            }</dd>
             </div>
           `;
-          })
-          .join('')}
+        })
+        .join('')}
       </dl>
-        ${
-          this.unsupportedMetrics.length &&
-          this.hasAttribute('show-unsupported')
-            ? `<p>Not supported: ${this.unsupportedMetrics.join(', ')}</p>`
-            : ''
-        }
+        ${this.unsupportedMetrics.length &&
+        this.hasAttribute('show-unsupported')
+        ? `<p>Not supported: ${this.unsupportedMetrics.join(', ')}</p>`
+        : ''
+      }
     </div>`;
   }
 }
